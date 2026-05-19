@@ -208,7 +208,7 @@ export default function LandingPage() {
           <div className="flex gap-8">
             <a href="#" className="hover:opacity-100 transition-opacity">Twitter</a>
             <a href="#" className="hover:opacity-100 transition-opacity">GitHub</a>
-            <a href="#" className="hover:opacity-100 transition-opacity">span className="hover:opacity-100 transition-opacity">LinkedIn</a>
+            <a href="#" className="hover:opacity-100 transition-opacity">LinkedIn</a>
           </div>
         </footer>
       </main>
