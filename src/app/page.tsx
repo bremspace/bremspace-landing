@@ -2,265 +2,324 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
 import { Rocket, Cpu, Globe, Zap, ArrowRight, ChevronRight, Terminal, Shield, Activity } from 'lucide-react';
 
-const FadeIn = ({ children, delay = 0, duration = 0.8 }: { children: React.ReactNode; delay?: number; duration?: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration, delay, ease: [0.21, 0.47, 0.32, 1.4] }}
-  >
-    {children}
-  </motion.div>
-);
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+};
 
-const GlassCard = ({ children, className, colSpan = "col-span-1", rowSpan = "row-span-1" }: { children: React.ReactNode; className?: string; colSpan?: string; rowSpan?: string }) => (
-  <motion.div
-    whileHover={{ y: -5, transition: { duration: 0.2 } }}
-    className={cn(
-      "relative group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl",
-      "hover:border-white/20 transition-all duration-500",
-      colSpan, rowSpan, className
-    )}
-  >
-    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none" />
-    <div className="relative z-10 p-8 h-full">{children}</div>
-  </motion.div>
-);
+const stagger = {
+  animate: {
+    transition: { staggerChildren: 0.12 },
+  },
+};
+
+function FadeUp({ children, delay = 0, className = '' }: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      variants={fadeUp}
+      transition={{ duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 1.4] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function GlassCard({
+  children,
+  className = '',
+  hover = true,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  hover?: boolean;
+}) {
+  return (
+    <div
+      className={`glass p-8 ${hover ? 'transition-all duration-500 hover:border-white/20 hover:shadow-[0_0_60px_rgba(139,92,246,0.06)]' : ''} ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+
+const products = [
+  {
+    name: 'BremOS',
+    desc: 'Spatial operating system for next-gen hardware.',
+    id: 'Sistem operasi spasial',
+    icon: Terminal,
+  },
+  {
+    name: 'VoidCore',
+    desc: 'High-performance compute engine for dApps.',
+    id: 'Mesin komputasi terdesentralisasi',
+    icon: Activity,
+  },
+  {
+    name: 'NovaLink',
+    desc: 'Zero-latency bridge across distributed nodes.',
+    id: 'Komunikasi zero-latency',
+    icon: Zap,
+  },
+];
+
+const techs = ['Rust', 'Wasm', 'Next.js', 'TypeScript', 'gRPC', 'QUIC'];
 
 export default function LandingPage() {
   const [email, setEmail] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   return (
-    <div className="relative min-h-screen text-white selection:bg-violet-500/30 font-sans overflow-x-hidden">
-      <div className="fixed inset-0 z-[-1] bg-[#020202]" />
-      <div className="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-violet-900/20 blur-[120px] pointer-events-none" />
-      <div className="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900/20 blur-[120px] pointer-events-none" />
-      <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+    <div className="relative min-h-screen overflow-x-hidden bg-[#020202] selection:bg-violet-500/30">
+      {/* Background layers */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute -left-[20%] -top-[20%] h-[60%] w-[60%] rounded-full bg-violet-900/15 blur-[150px]" />
+        <div className="absolute -bottom-[20%] -right-[20%] h-[60%] w-[60%] rounded-full bg-cyan-900/15 blur-[150px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_60%,transparent_100%)]" />
+      </div>
 
-      <nav className="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center backdrop-blur-2xl border-b border-white/5 bg-black/20">
-        <div className="flex items-center gap-3 group cursor-pointer">
-          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center rotate-3 group-hover:rotate-12 transition-transform duration-300 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-            <div className="w-5 h-5 bg-black rounded-sm rotate-45" />
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        {/* Navbar */}
+        <nav className="fixed left-0 right-0 top-0 z-50 mx-auto max-w-7xl px-6">
+          <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/[0.06] bg-black/60 px-6 py-4 backdrop-blur-2xl">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+                <div className="h-4 w-4 rotate-45 rounded-sm bg-black" />
+              </div>
+              <span className="text-sm font-bold tracking-tight uppercase">Bremspace</span>
+            </div>
+            <div className="hidden items-center gap-8 text-sm text-white/40 md:flex">
+              <a href="#vision" className="transition-colors hover:text-white/80">Vision</a>
+              <a href="#stack" className="transition-colors hover:text-white/80">Stack</a>
+              <a href="#ecosystem" className="transition-colors hover:text-white/80">Ecosystem</a>
+            </div>
+            <a
+              href="#waitlist"
+              className="rounded-full bg-white px-5 py-2 text-xs font-bold text-black transition-all hover:scale-105 active:scale-95"
+            >
+              Get Access
+            </a>
           </div>
-          <span className="font-bold text-xl tracking-tighter uppercase">Bremspace</span>
-        </div>
-        <div className="hidden md:flex gap-8 text-sm font-medium opacity-40 group-hover:opacity-100 transition-all">
-          <a href="#vision" className="hover:text-white transition-colors">Vision</a>
-          <a href="#tech" className="hover:text-white transition-colors">Stack</a>
-          <a href="#ecosystem" className="hover:text-white transition-colors">Ecosystem</a>
-        </div>
-        <a href="#waitlist" className="px-5 py-2.5 bg-white text-black rounded-full text-xs font-bold hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10">
-          Get Access
-        </a>
-      </nav>
+        </nav>
 
-      <main className="pt-40 px-6 max-w-7xl mx-auto relative z-10">
-        {/* HERO */}
-        <section className="flex flex-col items-center text-center mb-40 relative">
-          <FadeIn delay={0}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-[10px] uppercase tracking-widest font-bold mb-8 opacity-60">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-              </span>
-              Autonomous Venture Studio
-            </div>
-          </FadeIn>
+        <main className="pt-48">
+          {/* Hero */}
+          <section className="mb-48 flex flex-col items-center text-center">
+            <FadeUp delay={0}>
+              <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white/50">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+                </span>
+                Autonomous Venture Studio
+              </div>
+            </FadeUp>
 
-          <FadeIn delay={0.1}>
-            <h1 className="text-7xl md:text-9xl font-black tracking-tighter mb-8 leading-none">
-              Engineering <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/20">Beyond Space.</span>
-            </h1>
-          </FadeIn>
+            <FadeUp delay={0.1}>
+              <h1 className="mb-8 text-[clamp(3rem,10vw,8rem)] font-black leading-[0.9] tracking-tighter">
+                Engineering<br />
+                <span className="bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent">
+                  Beyond Space.
+                </span>
+              </h1>
+            </FadeUp>
 
-          <FadeIn delay={0.2}>
-            <p className="text-lg md:text-2xl opacity-40 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
-              We merge human creativity with AI autonomy to build the next frontier of scalable software.
-              <span className="block text-sm italic opacity-30 mt-4 font-mono tracking-wide">
-                Sistem masa depan untuk kedaulatan teknologi global.
-              </span>
-            </p>
-          </FadeIn>
+            <FadeUp delay={0.2}>
+              <p className="mb-12 max-w-2xl text-lg leading-relaxed text-white/40 md:text-xl">
+                We merge human creativity with AI autonomy to build the next frontier of scalable software.
+              </p>
+            </FadeUp>
 
-          <FadeIn delay={0.3}>
-            <div className="flex flex-col sm:flex-row gap-6">
-              <button className="group px-10 py-5 bg-white text-black rounded-full font-bold flex items-center gap-3 hover:scale-105 transition-all shadow-xl shadow-white/10">
-                Enter the Void <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-10 py-5 bg-white/5 border border-white/10 rounded-full font-bold hover:bg-white/10 transition-all opacity-60 hover:opacity-100">
-                Whitepaper
-              </button>
-            </div>
-          </FadeIn>
-        </section>
+            <FadeUp delay={0.3}>
+              <div className="flex flex-col items-center gap-4 sm:flex-row">
+                <button className="group flex items-center gap-2 rounded-full bg-white px-8 py-4 font-bold text-black shadow-xl shadow-white/10 transition-all hover:scale-105">
+                  Enter the Void
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </button>
+                <button className="rounded-full border border-white/10 bg-white/[0.03] px-8 py-4 font-bold text-white/60 transition-all hover:bg-white/10">
+                  Whitepaper
+                </button>
+              </div>
+            </FadeUp>
+          </section>
 
-        {/* VISION BENTO */}
-        <section id="vision" className="mb-40">
-          <FadeIn>
-            <h2 className="text-4xl font-bold text-center mb-20 tracking-tighter">Core Philosophy</h2>
-          </FadeIn>
+          {/* Vision Bento */}
+          <section id="vision" className="mb-48">
+            <FadeUp>
+              <h2 className="mb-20 text-center text-4xl font-bold tracking-tighter">Core Philosophy</h2>
+            </FadeUp>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[240px]">
-            <GlassCard colSpan="md:col-span-2" rowSpan="md:row-span-2" className="border-white/20 shadow-2xl shadow-violet-500/10">
-              <div className="flex flex-col h-full justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-violet-500/20 flex items-center justify-center mb-6 border border-violet-500/30">
-                    <Globe className="w-6 h-6 text-violet-400" />
+            <motion.div
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: '-80px' }}
+              variants={stagger}
+              className="bento-grid"
+            >
+              <FadeUp className="md:col-span-2 md:row-span-2" delay={0.1}>
+                <GlassCard className="flex h-full flex-col justify-between border-white/[0.12] glass-glow" hover>
+                  <div>
+                    <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-500/20">
+                      <Globe className="h-6 w-6 text-violet-400" />
+                    </div>
+                    <h3 className="mb-4 text-3xl font-bold">Global Sovereignty</h3>
+                    <p className="max-w-md leading-relaxed text-white/40">
+                      Building decentralized infrastructure that ensures data autonomy and systemic resilience.
+                    </p>
                   </div>
-                  <h3 className="text-3xl font-bold mb-4">Global Sovereignty</h3>
-                  <p className="text-zinc-400 leading-relaxed max-w-md">
-                    Building decentralized infrastructure that ensures data autonomy and systemic resilience.
-                    <span className="block mt-4 text-sm opacity-40 italic">Membangun infrastruktur terdesentralisasi untuk kedaulatan data.</span>
-                  </p>
-                </div>
-                <div className="mt-8 p-4 bg-black/40 rounded-2xl border border-white/10 font-mono text-[10px] opacity-40">
-                  <span className="text-violet-400">$</span> bremspace init --global-sovereignty
-                </div>
-              </div>
-            </GlassCard>
-
-            <GlassCard className="hover:border-cyan-500/30 transition-all duration-500">
-              <div className="flex flex-col h-full justify-between">
-                <Cpu className="w-8 h-8 text-cyan-400 mb-4" />
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Neural Sync</h3>
-                  <p className="text-sm opacity-50">Low-latency synchronization for distributed minds.</p>
-                </div>
-              </div>
-            </GlassCard>
-
-            <GlassCard className="hover:border-indigo-500/30 transition-all duration-500">
-              <div className="flex flex-col h-full justify-between">
-                <Shield className="w-8 h-8 text-indigo-400 mb-4" />
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Quantum Layer</h3>
-                  <p className="text-sm opacity-50">Post-quantum encryption by default.</p>
-                </div>
-              </div>
-            </GlassCard>
-
-            <GlassCard colSpan="md:col-span-2" className="group hover:border-white/30">
-              <div className="flex items-center gap-6">
-                <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
-                  <Rocket className="w-8 h-8 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold mb-1">Interstellar Mesh</h3>
-                  <p className="text-sm opacity-50">Network protocols optimized for long-distance propagation.</p>
-                  <div className="mt-4 h-1.5 bg-white/10 rounded-full overflow-hidden relative">
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-violet-500 to-cyan-500 h-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: '70%' }}
-                      transition={{ duration: 2, ease: "easeOut" }}
-                    />
+                  <div className="mt-8 rounded-2xl border border-white/[0.06] bg-black/40 px-4 py-3 font-mono text-[10px] text-white/30">
+                    <span className="text-violet-400">$</span> bremspace init --global-sovereignty
                   </div>
-                </div>
+                </GlassCard>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <GlassCard className="flex h-full flex-col justify-between transition-all duration-500 hover:border-cyan-500/30" hover>
+                  <Cpu className="mb-4 h-8 w-8 text-cyan-400" />
+                  <div>
+                    <h3 className="mb-2 text-xl font-bold">Neural Sync</h3>
+                    <p className="text-sm text-white/40">Low-latency synchronization for distributed minds.</p>
+                  </div>
+                </GlassCard>
+              </FadeUp>
+
+              <FadeUp delay={0.25}>
+                <GlassCard className="flex h-full flex-col justify-between transition-all duration-500 hover:border-indigo-500/30" hover>
+                  <Shield className="mb-4 h-8 w-8 text-indigo-400" />
+                  <div>
+                    <h3 className="mb-2 text-xl font-bold">Quantum Layer</h3>
+                    <p className="text-sm text-white/40">Post-quantum encryption by default.</p>
+                  </div>
+                </GlassCard>
+              </FadeUp>
+
+              <FadeUp className="md:col-span-2" delay={0.3}>
+                <GlassCard className="flex items-center gap-6 transition-all duration-500 hover:border-white/20" hover>
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] transition-transform group-hover:scale-110">
+                    <Rocket className="h-8 w-8 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="mb-1 text-2xl font-bold">Interstellar Mesh</h3>
+                    <p className="mb-4 text-sm text-white/40">Network protocols optimized for long-distance propagation.</p>
+                    <div className="relative h-1.5 overflow-hidden rounded-full bg-white/10">
+                      <motion.div
+                        className="absolute inset-0 h-full rounded-full bg-gradient-to-r from-violet-500 to-cyan-500"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '70%' }}
+                        transition={{ duration: 2, ease: 'easeOut' }}
+                      />
+                    </div>
+                  </div>
+                </GlassCard>
+              </FadeUp>
+            </motion.div>
+          </section>
+
+          {/* Tech Stack */}
+          <section id="stack" className="mb-48">
+            <FadeUp>
+              <div className="mb-20 text-center">
+                <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">Infrastructure</p>
+                <h3 className="text-4xl font-bold tracking-tighter">Powered by Modernity.</h3>
               </div>
-            </GlassCard>
-          </div>
-        </section>
-
-        {/* TECH STACK */}
-        <section id="tech" className="mb-40 py-20">
-          <FadeIn>
-            <div className="text-center mb-20">
-              <h2 className="text-sm uppercase tracking-[0.3em] opacity-40 font-bold mb-4">Infrastructure</h2>
-              <h3 className="text-4xl font-bold tracking-tighter">Powered by Modernity.</h3>
+            </FadeUp>
+            <div className="flex flex-wrap justify-center gap-x-16 gap-y-10 opacity-30 grayscale transition-all duration-700 hover:grayscale-0">
+              {techs.map((t) => (
+                <span key={t} className="cursor-default text-3xl font-black tracking-tighter transition-colors hover:text-white">
+                  {t}
+                </span>
+              ))}
             </div>
-          </FadeIn>
-          <div className="flex flex-wrap justify-center gap-x-16 gap-y-10 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
-            {['Rust', 'Wasm', 'Next.js', 'TypeScript', 'gRPC', 'QUIC'].map((tech) => (
-              <span key={tech} className="text-3xl font-black tracking-tighter hover:text-white transition-colors cursor-default">
-                {tech}
-              </span>
-            ))}
-          </div>
-        </section>
+          </section>
 
-        {/* ECOSYSTEM */}
-        <section id="ecosystem" className="mb-40">
-          <FadeIn>
-            <h2 className="text-4xl font-bold text-center mb-20 tracking-tighter">Future Ecosystem</h2>
-          </FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: 'BremOS', desc: 'A spatial operating system for the next-gen hardware.', id: 'Sistem operasi spasial untuk hardware generasi baru.', icon: <Terminal className="w-6 h-6" /> },
-              { name: 'VoidCore', desc: 'High-performance compute engine for decentralized apps.', id: 'Mesin komputasi performa tinggi untuk aplikasi terdesentralisasi.', icon: <Activity className="w-6 h-6" /> },
-              { name: 'NovaLink', desc: 'Zero-latency communication bridge across nodes.', id: 'Sistem komunikasi zero-latency antar node.', icon: <Zap className="w-6 h-6" /> }
-            ].map((prod) => (
-              <GlassCard key={prod.name} className="group hover:bg-white/[0.08] transition-all cursor-pointer">
-                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  {prod.icon}
-                </div>
-                <h3 className="text-2xl font-bold mb-3 group-hover:text-white transition-colors">{prod.name}</h3>
-                <p className="text-sm opacity-50 mb-4 leading-relaxed">{prod.desc}</p>
-                <p className="text-xs opacity-30 italic mb-6 font-mono">{prod.id}</p>
-                <div className="flex items-center gap-1 text-xs font-bold opacity-30 group-hover:opacity-100 transition-all uppercase tracking-widest">
-                  Explore <ChevronRight className="w-3 h-3" />
-                </div>
-              </GlassCard>
-            ))}
-          </div>
-        </section>
-
-        {/* WAITLIST */}
-        <section id="waitlist" className="mb-40 py-32 rounded-[4rem] glass border-white/10 text-center relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-transparent to-cyan-500/10 pointer-events-none" />
-          <FadeIn>
-            <h2 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter">Get Early Access</h2>
-            <p className="opacity-40 mb-12 max-w-xl mx-auto px-6 text-lg font-light">
-              Join the vanguard. Experience the future of digital sovereignty.
-              <span className="block text-sm italic opacity-30 mt-3">Bergabunglah dengan garis depan teknologi.</span>
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto px-6">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="email@example.com"
-                className="flex-1 px-6 py-5 rounded-full bg-black/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all text-white placeholder:text-white/20"
-              />
-              <button
-                onClick={() => setIsSubmitted(true)}
-                className="px-10 py-5 bg-white text-black rounded-full font-bold hover:scale-105 active:scale-95 transition-all shadow-xl shadow-white/10"
-              >
-                Join
-              </button>
+          {/* Ecosystem */}
+          <section id="ecosystem" className="mb-48">
+            <FadeUp>
+              <h2 className="mb-20 text-center text-4xl font-bold tracking-tighter">Future Ecosystem</h2>
+            </FadeUp>
+            <div className="grid gap-8 md:grid-cols-3">
+              {products.map((p) => {
+                const Icon = p.icon;
+                return (
+                  <FadeUp key={p.name} delay={0.1}>
+                    <GlassCard className="group cursor-pointer transition-all duration-500 hover:bg-white/[0.06]" hover>
+                      <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 transition-transform group-hover:scale-110">
+                        <Icon className="h-5 w-5 text-white" />
+                      </div>
+                      <h3 className="mb-3 text-2xl font-bold transition-colors group-hover:text-white/90">{p.name}</h3>
+                      <p className="mb-4 text-sm leading-relaxed text-white/40">{p.desc}</p>
+                      <p className="mb-6 font-mono text-xs italic text-white/20">{p.id}</p>
+                      <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-white/30 transition-all group-hover:text-white">
+                        Explore <ChevronRight className="h-3 w-3" />
+                      </div>
+                    </GlassCard>
+                  </FadeUp>
+                );
+              })}
             </div>
-            <AnimatePresence>
-              {isSubmitted && (
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 text-sm font-bold text-violet-400"
+          </section>
+
+          {/* Waitlist */}
+          <section id="waitlist" className="glass mb-48 overflow-hidden rounded-[3rem] border-white/10 py-28 text-center">
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-violet-500/8 via-transparent to-cyan-500/8" />
+            <FadeUp>
+              <h2 className="mb-8 text-[clamp(2.5rem,6vw,4.5rem)] font-black tracking-tighter">Get Early Access</h2>
+              <p className="mx-auto mb-12 max-w-xl px-6 text-lg text-white/30">
+                Join the vanguard. Experience the future of digital sovereignty.
+              </p>
+              <div className="mx-auto flex max-w-md flex-col gap-4 px-6 sm:flex-row">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="email@example.com"
+                  className="flex-1 rounded-full border border-white/10 bg-black/40 px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-white/20"
+                />
+                <button
+                  onClick={() => setSubmitted(true)}
+                  className="rounded-full bg-white px-10 py-4 font-bold text-black shadow-xl shadow-white/10 transition-all hover:scale-105 active:scale-95"
                 >
-                  Welcome to the void, Pioneer. Check your email soon.
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </FadeIn>
-        </section>
+                  Join
+                </button>
+              </div>
+              <AnimatePresence>
+                {submitted && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="mt-6 font-bold text-violet-400"
+                  >
+                    Welcome to the void, Pioneer.
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </FadeUp>
+          </section>
+        </main>
 
-        {/* FOOTER */}
-        <footer className="py-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-12 opacity-30 text-[10px] uppercase tracking-[0.2em] font-bold">
+        {/* Footer */}
+        <footer className="flex flex-col items-center justify-between gap-8 border-t border-white/[0.04] py-16 text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 md:flex-row">
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-              <div className="w-3 h-3 bg-black rotate-45" />
+            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white">
+              <div className="h-2.5 w-2.5 rotate-45 rounded-sm bg-black" />
             </div>
-            <span>&copy; 2026 BREMSPACE ENGINE</span>
+            &copy; 2026 BREMSPACE
           </div>
           <div className="flex gap-10">
-            <a href="#" className="hover:opacity-100 transition-opacity">Twitter</a>
-            <a href="#" className="hover:opacity-100 transition-opacity">GitHub</a>
-            <a href="#" className="hover:opacity-100 transition-opacity">LinkedIn</a>
+            {['Twitter', 'GitHub', 'LinkedIn'].map((s) => (
+              <a key={s} href="#" className="transition-opacity hover:opacity-100">{s}</a>
+            ))}
           </div>
         </footer>
-      </main>
+      </div>
     </div>
   );
 }
