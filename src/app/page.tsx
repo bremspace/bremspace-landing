@@ -97,8 +97,8 @@ export default function LandingPage() {
             </div>
             <div className="hidden items-center gap-8 text-sm text-white/40 md:flex">
               <a href="#vision" className="transition-colors hover:text-white/80">Vision</a>
-              <a href="#stack" className="transition-colors hover:text-white/80">Stack</a>
-              <a href="#ecosystem" className="transition-colors hover:text-white/80">Ecosystem</a>
+              <a href="#solutions" className="transition-colors hover:text-white/80">Solutions</a>
+              <a href="#impact" className="transition-colors hover:text-white/80">Impact</a>
             </div>
             <a
               href="#waitlist"
@@ -123,17 +123,17 @@ export default function LandingPage() {
             </FadeUp>
 
             <FadeUp delay={0.1}>
-              <h1 className="mb-8 text-[clamp(3rem,10vw,8rem)] font-black leading-[0.9] tracking-tighter">
-                Engineering<br />
-                <span className="bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent">
-                  Beyond Space.
-                </span>
-              </h1>
+                <h1 className="mb-8 text-[clamp(3rem,10vw,8rem)] font-black leading-[0.9] tracking-tighter">
+                  Empowering<br />
+                  <span className="bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent">
+                    Digital Society.
+                  </span>
+                </h1>
             </FadeUp>
 
             <FadeUp delay={0.2}>
               <p className="mb-12 max-w-2xl text-lg leading-relaxed text-white/40 md:text-xl">
-                We merge human creativity with AI autonomy to build the next frontier of scalable software.
+                We make advanced technology accessible to everyone—simplifying everyday lives through intelligent AI solutions.
               </p>
             </FadeUp>
 
