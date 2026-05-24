@@ -51,21 +51,21 @@ function GlassCard({
 
 const products = [
   {
-    name: 'BremOS',
-    desc: 'Spatial operating system for next-gen hardware.',
-    id: 'Sistem operasi spasial',
+    name: 'AI Smart Assist',
+    desc: 'Otomatisasi cerdas untuk efisiensi operasional UMKM.',
+    id: 'Asisten cerdas harian',
     icon: Terminal,
   },
   {
-    name: 'VoidCore',
-    desc: 'High-performance compute engine for dApps.',
-    id: 'Mesin komputasi terdesentralisasi',
+    name: 'Data Insight',
+    desc: 'Pengelolaan data sederhana untuk keputusan bisnis akurat.',
+    id: 'Analisis data UMKM',
     icon: Activity,
   },
   {
-    name: 'NovaLink',
-    desc: 'Zero-latency bridge across distributed nodes.',
-    id: 'Komunikasi zero-latency',
+    name: 'Customer Connect',
+    desc: 'Sistem komunikasi otomatis untuk pelanggan Anda.',
+    id: 'Manajemen interaksi pelanggan',
     icon: Zap,
   },
 ];
@@ -126,14 +126,14 @@ export default function LandingPage() {
                 <h1 className="mb-8 text-[clamp(3rem,10vw,8rem)] font-black leading-[0.9] tracking-tighter">
                   Empowering<br />
                   <span className="bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent">
-                    Digital Society.
+                    UMKM & Community.
                   </span>
                 </h1>
             </FadeUp>
 
             <FadeUp delay={0.2}>
               <p className="mb-12 max-w-2xl text-lg leading-relaxed text-white/40 md:text-xl">
-                We make advanced technology accessible to everyone—simplifying everyday lives through intelligent AI solutions.
+                Kami menghadirkan teknologi AI yang mudah digunakan untuk mempercepat pertumbuhan bisnis dan kehidupan Anda.
               </p>
             </FadeUp>
 
